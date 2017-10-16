@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import DeckList from './components/DeckList';
+import CreateDeck from './components/CreateDeck';
 
 const TabNavigation = TabNavigator({
   DeckList: {
@@ -9,13 +10,19 @@ const TabNavigation = TabNavigator({
       tabBarLabel: 'My Decks',
     },
   },
+  NewDeck: {
+    screen: CreateDeck,
+    navigationOptions: {
+      tabBarLabel: 'New Deck',
+    },
+  },
 });
 
 const StackNavigation = StackNavigator({
-  DeckList: {
+  Home: {
     screen: TabNavigation,
     navigationOptions: {
-      title: 'My Decks',
+      title: 'FlashCards',
     },
   },
 });

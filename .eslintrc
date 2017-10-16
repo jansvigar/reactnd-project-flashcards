@@ -1,5 +1,6 @@
 {
   "extends": "airbnb",
+  "parser": "babel-eslint",
   "env": {
     "browser": true,
     "node": true,
@@ -10,6 +11,7 @@
     "react/prefer-stateless-function": 0,
     "no-use-before-define": 0,
     "no-underscore-dangle": 0,
-    "import/no-unresolved": ["error", { "ignore": ["."] }]
+    "import/no-unresolved": ["error", { "ignore": ["."] }],
+    "arrow-parens": 0
   }
 }

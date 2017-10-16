@@ -1,14 +1,30 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import Deck from './Deck';
+import { getDecks } from '../utils/api';
 
-const DeckList = () => (
-  <FlatList
-    contentContainerStyle={styles.container}
-    data={[{ key: 1, cards: 4 }, { key: 2, cards: 3 }]}
-    renderItem={({ item }) => <Deck title={`Deck ${item.key}`} cardsCount={item.cards} />}
-  />
-);
+class DeckList extends Component {
+  state = {
+    decks: [],
+  };
+  componentDidMount() {
+    getDecks().then(decks => {
+      this.setState({ decks });
+    });
+  }
+  render() {
+    return (
+      <FlatList
+        contentContainerStyle={styles.container}
+        data={this.state.decks}
+        keyExtractor={item => item.title}
+        renderItem={({ item }) => (
+          <Deck title={`Deck ${item.title}`} cardsCount={item.questions.length} />
+        )}
+      />
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
