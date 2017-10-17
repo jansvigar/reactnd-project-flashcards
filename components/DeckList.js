@@ -8,10 +8,18 @@ class DeckList extends Component {
     decks: [],
   };
   componentDidMount() {
+    this.updateDeckList();
+  }
+  componentWillReceiveProps(newProps) {
+    if (newProps.screenProps.route_index === 0) {
+      this.updateDeckList();
+    }
+  }
+  updateDeckList = () => {
     getDecks().then(decks => {
       this.setState({ decks });
     });
-  }
+  };
   render() {
     return (
       <FlatList
@@ -19,7 +27,7 @@ class DeckList extends Component {
         data={this.state.decks}
         keyExtractor={item => item.title}
         renderItem={({ item }) => (
-          <Deck title={`Deck ${item.title}`} cardsCount={item.questions.length} />
+          <Deck title={`${item.title}`} cardsCount={item.questions.length} />
         )}
       />
     );

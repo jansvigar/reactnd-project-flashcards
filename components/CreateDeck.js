@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Text,
   TextInput,
@@ -11,12 +12,17 @@ import { darkblue } from '../utils/colors';
 import { saveDeckTitle } from '../utils/api';
 
 class CreateDeck extends Component {
+  static propTypes = {
+    navigation: PropTypes.shape({ goBack: PropTypes.func.isRequired }).isRequired,
+  };
   state = {
     DeckTitle: '',
   };
   handleSubmitNewDeck = () => {
     if (this.state.DeckTitle) {
       saveDeckTitle(this.state.DeckTitle);
+      this.setState({ DeckTitle: '' });
+      this.props.navigation.goBack();
     }
   };
   render() {
