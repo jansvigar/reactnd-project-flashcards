@@ -1,19 +1,25 @@
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
-import PropTypes from 'prop-types';
+import { string, number, shape, func } from 'prop-types';
+import { withNavigation } from 'react-navigation';
 import { lightblue } from '../utils/colors';
 
-const Deck = ({ title, cardsCount }) => (
-  /* TODO: add onPress to the TouchableOpacity */
-  <TouchableOpacity style={styles.container}>
-    <Text>{title}</Text>
-    <Text>{cardsCount} cards</Text>
-  </TouchableOpacity>
-);
+const Deck = ({ title, cardsCount, navigation }) => {
+  const _handleDeckPress = () => {
+    navigation.navigate('DeckDetail', { title, cardsCount });
+  };
+  return (
+    <TouchableOpacity onPress={_handleDeckPress} style={styles.container}>
+      <Text>{title}</Text>
+      <Text>{cardsCount} cards</Text>
+    </TouchableOpacity>
+  );
+};
 
 Deck.propTypes = {
-  title: PropTypes.string.isRequired,
-  cardsCount: PropTypes.number.isRequired,
+  title: string.isRequired,
+  cardsCount: number.isRequired,
+  navigation: shape({ navigate: func.isRequired }).isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -33,4 +39,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Deck;
+export default withNavigation(Deck);

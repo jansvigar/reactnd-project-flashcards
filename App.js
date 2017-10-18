@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; /* eslint import/no-extraneous-dependencies: 0 */
 import DeckList from './components/DeckList';
+import DeckDetail from './components/DeckDetail';
 import CreateDeck from './components/CreateDeck';
 
 const TabNavigation = TabNavigator({
@@ -30,6 +31,12 @@ const StackNavigation = StackNavigator({
     screen: TabNavigation,
     navigationOptions: {
       title: 'FlashCards',
+    },
+  },
+  DeckDetail: {
+    screen: DeckDetail,
+    navigationOptions: {
+      title: 'Deck',
     },
   },
 });
