@@ -17,13 +17,14 @@ class QuizScore extends Component {
     Animated.timing(this.state.scoreAnim, {
       toValue: this.props.score,
       duration: 500,
+      delay: 1000,
     }).start();
   }
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{ fontSize: 24 }}>This is your score:</Text>
-        <Animated.Text style={{ fontSize: 32 }}>{this.state.score}%</Animated.Text>
+        <Text style={{ fontSize: 24 }}>Your score is:</Text>
+        <Animated.Text style={{ fontSize: 32 }}>{this.state.score || '0'}%</Animated.Text>
       </View>
     );
   }

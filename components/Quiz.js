@@ -22,17 +22,22 @@ class Quiz extends Component {
   };
   componentWillMount() {
     this.animatedValue = new Animated.Value(0);
-    this.value = 0;
+    this.flipValue = 0;
     this.animatedValue.addListener(({ value }) => {
-      this.value = value;
+      this.flipValue = value;
     });
+    this.animatedTranslateValue = new Animated.Value(0);
     this.flipInterpolate = this.animatedValue.interpolate({
       inputRange: [0, 360],
       outputRange: ['0deg', '360deg'],
     });
+    this.opacityInterpolate = this.animatedTranslateValue.interpolate({
+      inputRange: [-400, 0, 400],
+      outputRange: [0, 1, 0],
+    });
   }
-  _flipCard() {
-    if (this.value >= 180) {
+  _flipCard = () => {
+    if (this.flipValue >= 180) {
       Animated.spring(this.animatedValue, {
         toValue: 0,
         friction: 8,
@@ -45,21 +50,41 @@ class Quiz extends Component {
         tension: 10,
       }).start();
     }
-  }
+  };
+  _swipe = () => {
+    Animated.sequence([
+      Animated.timing(this.animatedTranslateValue, {
+        toValue: 400,
+        duration: 500,
+      }),
+      Animated.timing(this.animatedTranslateValue, {
+        toValue: 0,
+        duration: 500,
+      }),
+    ]).start();
+  };
   _toggleAnswer = () => {
-    this.setState({ showAnswer: !this.state.showAnswer });
     this._flipCard();
+    setTimeout(() => {
+      this.setState({ showAnswer: !this.state.showAnswer });
+    }, 250);
   };
   _handleButtonClick = isCorrectAnswer => () => {
     const correctAnswer = isCorrectAnswer ? this.state.correctAnswer + 1 : this.state.correctAnswer;
     const cardIdx = this.state.cardIdx + 1;
-    this.setState({ correctAnswer, cardIdx, showAnswer: false });
+    this._swipe();
+    setTimeout(() => {
+      this.setState({ correctAnswer, cardIdx, showAnswer: false });
+    }, 500);
   };
   _renderQuizView = () => {
     const { questions } = this.props.navigation.state.params.deck;
     if (this.state.showAnswer) {
       return (
         <View style={{ flex: 1 }}>
+          <View>
+            <Text>{`${this.state.cardIdx + 1} / ${questions.length}`}</Text>
+          </View>
           <View style={styles.content}>
             <Text style={styles.answer}>{questions[this.state.cardIdx].answer}</Text>
             <Button onPress={this._toggleAnswer} title="View Question" />
@@ -82,20 +107,25 @@ class Quiz extends Component {
       );
     }
     return (
-      <View style={styles.content}>
-        <Text style={styles.question}>{questions[this.state.cardIdx].question}</Text>
-        <Button onPress={this._toggleAnswer} title="View Answer" />
+      <View style={{ flex: 1 }}>
+        <View>
+          <Text>{`${this.state.cardIdx + 1} / ${questions.length}`}</Text>
+        </View>
+        <View style={styles.content}>
+          <Text style={styles.question}>{questions[this.state.cardIdx].question}</Text>
+          <Button onPress={this._toggleAnswer} title="View Answer" />
+        </View>
       </View>
     );
   };
   render() {
-    const flipAnimatedStyle = {
-      transform: [{ rotateY: this.flipInterpolate }],
+    const animatedStyle = {
+      transform: [{ rotateY: this.flipInterpolate }, { translateX: this.animatedTranslateValue }],
+      opacity: this.opacityInterpolate,
     };
-
     const { questions } = this.props.navigation.state.params.deck;
     return (
-      <Animated.View style={[styles.container, flipAnimatedStyle]}>
+      <Animated.View style={[styles.container, animatedStyle]}>
         {this.state.cardIdx < questions.length ? (
           this._renderQuizView()
         ) : (
