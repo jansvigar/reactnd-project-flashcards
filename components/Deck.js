@@ -6,7 +6,7 @@ import { lightblue } from '../utils/colors';
 
 const Deck = ({ title, cardsCount, navigation }) => {
   const _handleDeckPress = () => {
-    navigation.navigate('DeckDetail', { title, cardsCount });
+    navigation.navigate('DeckDetail', { title });
   };
   return (
     <TouchableOpacity onPress={_handleDeckPress} style={styles.container}>

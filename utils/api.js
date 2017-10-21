@@ -21,13 +21,11 @@ export const getDecks = () =>
       }),
     );
 
-export const getDeck = title => AsyncStorage.getItem(title);
+export const getDeck = title => AsyncStorage.getItem(title).then(result => JSON.parse(result));
 
-export const addCardToDeck = (title, card) => {
+export const addCardToDeck = (deck, card) => {
   const delta = {
-    [title]: {
-      questions: [card],
-    },
+    questions: deck.questions.concat(card),
   };
-  return AsyncStorage.mergeItems(title, JSON.stringify(delta));
+  return AsyncStorage.mergeItem(deck.title, JSON.stringify(delta));
 };

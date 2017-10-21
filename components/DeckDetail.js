@@ -1,29 +1,52 @@
 import React, { Component } from 'react';
-import { shape, string, number } from 'prop-types';
+import { shape, string, func } from 'prop-types';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { darkblue, darkyellow } from '../utils/colors';
+import { getDeck } from '../utils/api';
 
 class DeckDetail extends Component {
   static propTypes = {
     navigation: shape({
+      navigate: func.isRequired,
       state: shape({
         params: shape({
           title: string.isRequired,
-          cardsCount: number.isRequired,
         }).isRequired,
       }).isRequired,
     }).isRequired,
   };
+  state = {
+    deck: {},
+  };
+  componentDidMount() {
+    this.getDeckInfo();
+  }
+  getDeckInfo = () => {
+    const { title } = this.props.navigation.state.params;
+    getDeck(title).then(deck => {
+      this.setState({ deck });
+    });
+  };
+  _handleAddNewCard = () => {
+    const { navigate } = this.props.navigation;
+    navigate('AddCard', { deck: this.state.deck, onSuccessAdd: this.getDeckInfo });
+  };
+  _handleStartQuiz = () => {
+    const { navigate } = this.props.navigation;
+    navigate('StartQuiz', { deck: this.state.deck });
+  };
   render() {
-    const { navigation: { state } } = this.props;
+    const { title, questions } = this.state.deck;
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>{state.params.title}</Text>
-        <Text style={styles.cardCount}>{state.params.cardsCount} cards</Text>
-        <TouchableOpacity style={styles.addCardBtn}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.cardCount}>
+          {questions ? questions.length : 0} {questions && questions.length > 1 ? 'cards' : 'card'}
+        </Text>
+        <TouchableOpacity onPress={this._handleAddNewCard} style={styles.addCardBtn}>
           <Text style={{ fontSize: 32, color: '#fff' }}>Add Card</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.startQuizBtn}>
+        <TouchableOpacity onPress={this._handleStartQuiz} style={styles.startQuizBtn}>
           <Text style={{ fontSize: 32, color: '#fff' }}>Start Quiz</Text>
         </TouchableOpacity>
       </View>

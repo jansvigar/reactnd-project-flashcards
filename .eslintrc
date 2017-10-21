@@ -13,6 +13,7 @@
     "no-underscore-dangle": 0,
     "import/no-unresolved": ["error", { "ignore": ["."] }],
     "arrow-parens": 0,
-    "react/no-typos": 0
+    "react/no-typos": 0,
+    "no-nested-ternary": 0
   }
 }

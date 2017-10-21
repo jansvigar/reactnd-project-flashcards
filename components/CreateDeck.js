@@ -18,7 +18,7 @@ class CreateDeck extends Component {
   state = {
     DeckTitle: '',
   };
-  handleSubmitNewDeck = () => {
+  _handleSubmitNewDeck = () => {
     if (this.state.DeckTitle) {
       saveDeckTitle(this.state.DeckTitle);
       this.setState({ DeckTitle: '' });
@@ -35,7 +35,7 @@ class CreateDeck extends Component {
           onChangeText={DeckTitle => this.setState({ DeckTitle })}
           value={this.state.DeckTitle}
         />
-        <TouchableOpacity onPress={this.handleSubmitNewDeck}>
+        <TouchableOpacity onPress={this._handleSubmitNewDeck}>
           <Text style={styles.button}>Submit</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>

@@ -4,6 +4,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'; /* eslint import/no
 import DeckList from './components/DeckList';
 import DeckDetail from './components/DeckDetail';
 import CreateDeck from './components/CreateDeck';
+import AddCard from './components/AddCard';
+import Quiz from './components/Quiz';
 
 const TabNavigation = TabNavigator({
   DeckList: {
@@ -37,6 +39,18 @@ const StackNavigation = StackNavigator({
     screen: DeckDetail,
     navigationOptions: {
       title: 'Deck',
+    },
+  },
+  AddCard: {
+    screen: AddCard,
+    navigationOptions: {
+      title: 'Add New Card',
+    },
+  },
+  StartQuiz: {
+    screen: Quiz,
+    navigationOptions: {
+      title: 'Start Quiz',
     },
   },
 });
