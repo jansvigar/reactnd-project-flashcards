@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { shape, array } from 'prop-types';
-import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Button, Animated } from 'react-native';
 import QuizScore from './QuizScore';
 import { black, white, green, red } from '../utils/colors';
 import { calculateScore } from '../utils/helpers';
@@ -20,8 +20,35 @@ class Quiz extends Component {
     correctAnswer: 0,
     showAnswer: false,
   };
+  componentWillMount() {
+    this.animatedValue = new Animated.Value(0);
+    this.value = 0;
+    this.animatedValue.addListener(({ value }) => {
+      this.value = value;
+    });
+    this.flipInterpolate = this.animatedValue.interpolate({
+      inputRange: [0, 360],
+      outputRange: ['0deg', '360deg'],
+    });
+  }
+  _flipCard() {
+    if (this.value >= 180) {
+      Animated.spring(this.animatedValue, {
+        toValue: 0,
+        friction: 8,
+        tension: 10,
+      }).start();
+    } else {
+      Animated.spring(this.animatedValue, {
+        toValue: 360,
+        friction: 8,
+        tension: 10,
+      }).start();
+    }
+  }
   _toggleAnswer = () => {
     this.setState({ showAnswer: !this.state.showAnswer });
+    this._flipCard();
   };
   _handleButtonClick = isCorrectAnswer => () => {
     const correctAnswer = isCorrectAnswer ? this.state.correctAnswer + 1 : this.state.correctAnswer;
@@ -38,10 +65,16 @@ class Quiz extends Component {
             <Button onPress={this._toggleAnswer} title="View Question" />
           </View>
           <View style={styles.buttonGroup}>
-            <TouchableOpacity style={styles.incorrectBtn} onPress={this._handleButtonClick(false)}>
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: red }]}
+              onPress={this._handleButtonClick(false)}
+            >
               <Text style={styles.buttonText}>Incorrect</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.correctBtn} onPress={this._handleButtonClick(true)}>
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: green }]}
+              onPress={this._handleButtonClick(true)}
+            >
               <Text style={styles.buttonText}>Correct</Text>
             </TouchableOpacity>
           </View>
@@ -56,15 +89,19 @@ class Quiz extends Component {
     );
   };
   render() {
+    const flipAnimatedStyle = {
+      transform: [{ rotateY: this.flipInterpolate }],
+    };
+
     const { questions } = this.props.navigation.state.params.deck;
     return (
-      <View style={styles.container}>
+      <Animated.View style={[styles.container, flipAnimatedStyle]}>
         {this.state.cardIdx < questions.length ? (
           this._renderQuizView()
         ) : (
           <QuizScore score={calculateScore(this.state.correctAnswer, questions.length)} />
         )}
-      </View>
+      </Animated.View>
     );
   }
 }
@@ -106,24 +143,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 10,
   },
-  correctBtn: {
-    backgroundColor: green,
-    padding: 10,
-    width: 100,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 6,
-    marginLeft: 5,
-    marginRight: 5,
-    shadowColor: black,
-    shadowOffset: { width: 0.5, height: 0.5 },
-    shadowRadius: 1,
-    shadowOpacity: 0.8,
-    elevation: 2,
-  },
-  incorrectBtn: {
-    backgroundColor: red,
+  button: {
     padding: 10,
     width: 100,
     flex: 1,
