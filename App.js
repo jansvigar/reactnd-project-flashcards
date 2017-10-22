@@ -8,7 +8,7 @@ import CreateDeck from './components/CreateDeck';
 import AddCard from './components/AddCard';
 import Quiz from './components/Quiz';
 import { setLocalNotification } from './utils/helpers';
-import { blue, white } from './utils/colors';
+import { white } from './utils/colors';
 
 const TabNavigation = TabNavigator({
   DeckList: {
