@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { shape, array } from 'prop-types';
+import { shape, array, func } from 'prop-types';
 import { View, Text, TouchableOpacity, StyleSheet, Button, Animated } from 'react-native';
 import QuizScore from './QuizScore';
 import { black, white, green, red } from '../utils/colors';
@@ -8,6 +8,7 @@ import { calculateScore } from '../utils/helpers';
 class Quiz extends Component {
   static propTypes = {
     navigation: shape({
+      goBack: func.isRequired,
       state: shape({
         params: shape({
           deck: shape({ questions: array.isRequired }),
@@ -118,6 +119,16 @@ class Quiz extends Component {
       </View>
     );
   };
+  _startOver = () => {
+    this.setState({
+      cardIdx: 0,
+      correctAnswer: 0,
+      showAnswer: false,
+    });
+  };
+  _goBackToDeck = () => {
+    this.props.navigation.goBack();
+  };
   render() {
     const animatedStyle = {
       transform: [{ rotateY: this.flipInterpolate }, { translateX: this.animatedTranslateValue }],
@@ -129,7 +140,11 @@ class Quiz extends Component {
         {this.state.cardIdx < questions.length ? (
           this._renderQuizView()
         ) : (
-          <QuizScore score={calculateScore(this.state.correctAnswer, questions.length)} />
+          <QuizScore
+            score={calculateScore(this.state.correctAnswer, questions.length)}
+            startOver={this._startOver}
+            goBackToDeck={this._goBackToDeck}
+          />
         )}
       </Animated.View>
     );

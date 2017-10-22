@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View, Text } from 'react-native';
 import Deck from './Deck';
 import { getDecks } from '../utils/api';
 
@@ -21,7 +21,7 @@ class DeckList extends Component {
     });
   };
   render() {
-    return (
+    return this.state.decks.length > 0 ? (
       <FlatList
         contentContainerStyle={styles.container}
         data={this.state.decks}
@@ -30,6 +30,10 @@ class DeckList extends Component {
           <Deck title={`${item.title}`} cardsCount={item.questions.length} />
         )}
       />
+    ) : (
+      <View style={styles.container}>
+        <Text>No deck found. Add them now to start quizzing</Text>
+      </View>
     );
   }
 }
@@ -38,8 +42,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    margin: 20,
-    marginTop: 40,
+    margin: 10,
   },
 });
 

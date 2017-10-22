@@ -8,18 +8,21 @@ export const saveDeckTitle = title => {
   AsyncStorage.setItem(title, JSON.stringify(newDeck));
 };
 
-/* eslint-disable function-paren-newline */
 export const getDecks = () =>
   AsyncStorage.getAllKeys()
-    .then(keys => AsyncStorage.multiGet(keys))
-    .then(stores =>
-      stores.map((result, i, store) => {
-        // const key = store[i][0];
-        const value = JSON.parse(store[i][1]);
-        // const deck = { [key]: value };
-        return value;
-      }),
-    );
+    .then(keys => {
+      const filteredKeys = keys.filter(key => key !== 'flashcards:notification');
+      return AsyncStorage.multiGet(filteredKeys);
+    })
+    .then(stores => {
+      if (stores.length > 0) {
+        return stores.map((result, i, store) => {
+          const value = JSON.parse(store[i][1]);
+          return value;
+        });
+      }
+      return [];
+    });
 
 export const getDeck = title => AsyncStorage.getItem(title).then(result => JSON.parse(result));
 

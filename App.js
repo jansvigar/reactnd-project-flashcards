@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { TabNavigator, StackNavigator } from 'react-navigation';
+import { Constants } from 'expo';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; /* eslint import/no-extraneous-dependencies: 0 */
 import DeckList from './components/DeckList';
 import DeckDetail from './components/DeckDetail';
 import CreateDeck from './components/CreateDeck';
 import AddCard from './components/AddCard';
 import Quiz from './components/Quiz';
+import { setLocalNotification } from './utils/helpers';
+import { blue } from './utils/colors';
 
 const TabNavigation = TabNavigator({
   DeckList: {
@@ -33,6 +36,14 @@ const StackNavigation = StackNavigator({
     screen: TabNavigation,
     navigationOptions: {
       title: 'FlashCards',
+      headerStyle: {
+        paddingTop: Constants.statusBarHeight,
+        height: 60 + Constants.statusBarHeight,
+        backgroundColor: blue,
+      },
+      headerTitleStyle: {
+        color: '#fff',
+      },
     },
   },
   DeckDetail: {
@@ -56,6 +67,9 @@ const StackNavigation = StackNavigator({
 });
 
 export default class App extends Component {
+  componentDidMount() {
+    setLocalNotification();
+  }
   _onNavigationStateChange = (prevState, newState) => {
     this.setState({ ...this.state, route_index: newState.index });
   };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { shape, string, func } from 'prop-types';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { darkblue, darkyellow } from '../utils/colors';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { darkblue, darkyellow, black } from '../utils/colors';
 import { getDeck } from '../utils/api';
 
 class DeckDetail extends Component {
@@ -33,7 +33,12 @@ class DeckDetail extends Component {
   };
   _handleStartQuiz = () => {
     const { navigate } = this.props.navigation;
-    navigate('StartQuiz', { deck: this.state.deck });
+    const { questions } = this.state.deck;
+    if (questions.length) {
+      navigate('StartQuiz', { deck: this.state.deck });
+    } else {
+      Alert.alert('No card found', 'Please add card to the deck to enable the quiz');
+    }
   };
   render() {
     const { title, questions } = this.state.deck;
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
-    shadowColor: '#000',
+    shadowColor: black,
     shadowOffset: { width: 1, height: 1 },
     shadowRadius: 2,
     shadowOpacity: 0.8,
@@ -92,7 +97,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
-    shadowColor: '#000',
+    shadowColor: black,
     shadowOffset: { width: 1, height: 1 },
     shadowRadius: 2,
     shadowOpacity: 0.8,
