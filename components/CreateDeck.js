@@ -13,7 +13,7 @@ import { saveDeckTitle } from '../utils/api';
 
 class CreateDeck extends Component {
   static propTypes = {
-    navigation: PropTypes.shape({ goBack: PropTypes.func.isRequired }).isRequired,
+    navigation: PropTypes.shape({ navigate: PropTypes.func.isRequired }).isRequired,
   };
   state = {
     DeckTitle: '',
@@ -22,7 +22,7 @@ class CreateDeck extends Component {
     if (this.state.DeckTitle) {
       saveDeckTitle(this.state.DeckTitle);
       this.setState({ DeckTitle: '' });
-      this.props.navigation.goBack();
+      this.props.navigation.navigate('DeckDetail', { title: this.state.DeckTitle });
     }
   };
   render() {

@@ -8,7 +8,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import { darkblue, white, black } from '../utils/colors';
+import { darkblue } from '../utils/colors';
 import { addCardToDeck } from '../utils/api';
 
 class AddCard extends Component {
@@ -51,7 +51,8 @@ class AddCard extends Component {
         <Text style={styles.label}>Answer:</Text>
         <TextInput
           placeholder="Enter the answer"
-          style={Platform.OS === 'ios' ? styles.inputIOS : styles.inputAndroid}
+          multiline
+          style={Platform.OS === 'ios' ? styles.textAreaIOS : styles.textAreaAndroid}
           onChangeText={answer => this.setState({ answer })}
           value={this.state.answer}
         />
@@ -73,20 +74,34 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   inputIOS: {
-    borderColor: black,
+    borderColor: 'black',
     borderWidth: 1,
     height: 37,
     padding: 10,
     marginBottom: 20,
+    fontSize: 14,
   },
   inputAndroid: {
     height: 37,
     padding: 10,
     marginBottom: 20,
+    fontSize: 14,
+  },
+  textAreaIOS: {
+    borderColor: 'black',
+    borderWidth: 1,
+    padding: 10,
+    marginBottom: 20,
+    fontSize: 14,
+  },
+  textAreaAndroid: {
+    padding: 10,
+    marginBottom: 20,
+    fontSize: 14,
   },
   button: {
     backgroundColor: darkblue,
-    color: white,
+    color: 'white',
     padding: 10,
     marginTop: 10,
     textAlign: 'center',
