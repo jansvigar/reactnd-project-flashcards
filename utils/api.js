@@ -15,7 +15,7 @@ export const getDecks = () =>
       return AsyncStorage.multiGet(filteredKeys);
     })
     .then(stores => {
-      if (stores.length > 0) {
+      if (stores && stores.length > 0) {
         return stores.map((result, i, store) => {
           const value = JSON.parse(store[i][1]);
           return value;

@@ -37,18 +37,23 @@ class Quiz extends Component {
       outputRange: [0, 1, 0],
     });
   }
+  componentWillUnmount() {
+    this.animatedValue.removeAllListeners();
+  }
   _flipCard = () => {
     if (this.flipValue >= 180) {
       Animated.spring(this.animatedValue, {
         toValue: 0,
         friction: 8,
         tension: 10,
+        useNativeDriver: true,
       }).start();
     } else {
       Animated.spring(this.animatedValue, {
         toValue: 360,
         friction: 8,
         tension: 10,
+        useNativeDriver: true,
       }).start();
     }
   };
@@ -57,10 +62,12 @@ class Quiz extends Component {
       Animated.timing(this.animatedTranslateValue, {
         toValue: 400,
         duration: 500,
+        useNativeDriver: true,
       }),
       Animated.timing(this.animatedTranslateValue, {
         toValue: 0,
         duration: 500,
+        useNativeDriver: true,
       }),
     ]).start();
   };

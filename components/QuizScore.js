@@ -25,6 +25,9 @@ class QuizScore extends Component {
       delay: 1000,
     }).start();
   }
+  componentWillUnmount() {
+    this.state.scoreAnim.removeAllListeners();
+  }
   render() {
     return (
       <View style={styles.container}>

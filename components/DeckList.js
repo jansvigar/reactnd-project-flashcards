@@ -17,11 +17,13 @@ class DeckList extends Component {
   }
   updateDeckList = () => {
     getDecks().then(decks => {
-      this.setState({ decks });
+      if (decks && decks.length > 0) {
+        this.setState({ decks });
+      }
     });
   };
   render() {
-    return this.state.decks.length > 0 ? (
+    return this.state.decks && this.state.decks.length > 0 ? (
       <FlatList
         contentContainerStyle={styles.container}
         data={this.state.decks}
