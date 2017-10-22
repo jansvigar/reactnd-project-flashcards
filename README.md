@@ -1,5 +1,5 @@
 # Mobile FlashCards Project
-This is Udacity React Native project by Jan Vigar.
+This is Udacity React Native project by Jan Vigar. This app is bootstrapped using Create React Native App.
 
 ## Installation
 ```
