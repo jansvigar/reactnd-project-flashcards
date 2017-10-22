@@ -8,7 +8,7 @@ import CreateDeck from './components/CreateDeck';
 import AddCard from './components/AddCard';
 import Quiz from './components/Quiz';
 import { setLocalNotification } from './utils/helpers';
-import { blue } from './utils/colors';
+import { blue, white } from './utils/colors';
 
 const TabNavigation = TabNavigator({
   DeckList: {
@@ -31,37 +31,39 @@ const TabNavigation = TabNavigator({
   },
 });
 
+const StackNavigatorHeaderStyle = {
+  paddingTop: Constants.statusBarHeight,
+  height: 40 + Constants.statusBarHeight,
+  backgroundColor: white,
+};
+
 const StackNavigation = StackNavigator({
   Home: {
     screen: TabNavigation,
     navigationOptions: {
       title: 'FlashCards',
-      headerStyle: {
-        paddingTop: Constants.statusBarHeight,
-        height: 60 + Constants.statusBarHeight,
-        backgroundColor: blue,
-      },
-      headerTitleStyle: {
-        color: '#fff',
-      },
+      headerStyle: StackNavigatorHeaderStyle,
     },
   },
   DeckDetail: {
     screen: DeckDetail,
     navigationOptions: {
       title: 'Deck',
+      headerStyle: StackNavigatorHeaderStyle,
     },
   },
   AddCard: {
     screen: AddCard,
     navigationOptions: {
       title: 'Add New Card',
+      headerStyle: StackNavigatorHeaderStyle,
     },
   },
   StartQuiz: {
     screen: Quiz,
     navigationOptions: {
       title: 'Start Quiz',
+      headerStyle: StackNavigatorHeaderStyle,
     },
   },
 });
